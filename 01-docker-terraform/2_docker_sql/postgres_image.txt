@@ -46,3 +46,23 @@ python ingest_data.py \
   --db=ny_taxi \
   --table_name=yellow_taxi_trips \
   --url="https://github.com/DataTalksClub/nyc-tlc-data/releases/download/yellow/yellow_tripdata_2021-01.csv.gz"
+
+docker build (to dockerize the ingestion script):
+
+docker build -t taxi_ingest:v001 .
+
+docker run (note: bc it is in a network, you need to specify the host to be the postgres container, not localhost):
+# Note: if a cloud db, then the host would be a url to the db in the cloud.
+
+docker run -it \
+  --network=pg-network \
+  taxi_ingest:v001 \
+    --user=root \
+    --password=root \
+    --host=pg-database \
+    --port=5432 \
+    --db=ny_taxi \
+    --table_name=yellow_taxi_trips \
+    --url="https://github.com/DataTalksClub/nyc-tlc-data/releases/download/yellow/yellow_tripdata_2021-01.csv.gz"
+
+Note: Using a dockercompose.yml file is more efficient -> you can run and execute multiple containers at the same time.
