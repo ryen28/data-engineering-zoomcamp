@@ -66,3 +66,5 @@ docker run -it \
     --url="https://github.com/DataTalksClub/nyc-tlc-data/releases/download/yellow/yellow_tripdata_2021-01.csv.gz"
 
 Note: Using a dockercompose.yml file is more efficient -> you can run and execute multiple containers at the same time.
+Docker compose will take the commands you'd run in the command line and convert them into a .yaml file.
+If you mount a volume with data in it, the postgres db in the docker will get the data.
