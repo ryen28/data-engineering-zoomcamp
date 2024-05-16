@@ -2,47 +2,43 @@ terraform {
   required_providers {
     google = {
       source  = "hashicorp/google"
-      version = "4.51.0"
+      version = "5.6.0"
     }
   }
 }
 
 provider "google" {
 # Credentials only needs to be set if you do not have the GOOGLE_APPLICATION_CREDENTIALS set
-#  credentials = 
-  project = "<Your Project ID>"
+  # credentials = "./keys/my-creds.json" # COULD use this (hardcode), or set the echo GOOGLE_CREDENTIALS
+  project = "terraform-demo-423405"
   region  = "us-central1"
 }
 
 
-
-resource "google_storage_bucket" "data-lake-bucket" {
-  name          = "<Your Unique Bucket Name>"
+# demo-bucket is a label / local name
+# name attribute needs to be a very unique number (globally across all gcp)
+resource "google_storage_bucket" "demo-bucket" {
+  name          = "terraform-demo-423405-terra-bucket"
   location      = "US"
+  force_destroy = true
+
 
   # Optional, but recommended settings:
-  storage_class = "STANDARD"
-  uniform_bucket_level_access = true
+  #storage_class = "STANDARD"
+  #uniform_bucket_level_access = true
 
-  versioning {
-    enabled     = true
-  }
+  #versioning {
+   # enabled     = true
+  #}
 
   lifecycle_rule {
-    action {
-      type = "Delete"
-    }
     condition {
-      age = 30  // days
+      age = 1
+    }
+    action {
+      type = "AbortIncompleteMultipartUpload"
     }
   }
 
-  force_destroy = true
-}
-
-
-resource "google_bigquery_dataset" "dataset" {
-  dataset_id = "<The Dataset Name You Want to Use>"
-  project    = "<Your Project ID>"
-  location   = "US"
+  # force_destroy = true
 }
