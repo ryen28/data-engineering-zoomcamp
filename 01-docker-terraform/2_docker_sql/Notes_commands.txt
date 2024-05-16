@@ -68,3 +68,5 @@ docker run -it \
 Note: Using a dockercompose.yml file is more efficient -> you can run and execute multiple containers at the same time.
 Docker compose will take the commands you'd run in the command line and convert them into a .yaml file.
 If you mount a volume with data in it, the postgres db in the docker will get the data.
+Docker compose does not require a docker network to be explicitly declared in the yaml file for all the containers being executed in the yaml file.
+You should still create a  docker network ahead of time, so that docker compose knows to use it for the containers.
