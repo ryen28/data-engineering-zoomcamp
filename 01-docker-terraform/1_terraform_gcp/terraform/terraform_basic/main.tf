@@ -9,17 +9,17 @@ terraform {
 
 provider "google" {
 # Credentials only needs to be set if you do not have the GOOGLE_APPLICATION_CREDENTIALS set
-  # credentials = "./keys/my-creds.json" # COULD use this (hardcode), or set the echo GOOGLE_CREDENTIALS
-  project = "terraform-demo-423405"
-  region  = "us-central1"
+  credentials = file(var.credentials) # COULD use this (hardcode), or set the echo GOOGLE_CREDENTIALS
+  project = var.project
+  region  = var.region
 }
 
 
 # demo-bucket is a label / local name
 # name attribute needs to be a very unique number (globally across all gcp)
 resource "google_storage_bucket" "demo-bucket" {
-  name          = "terraform-demo-423405-terra-bucket"
-  location      = "US"
+  name          = var.gcs_bucket_name
+  location      = var.location
   force_destroy = true
 
 
@@ -41,4 +41,10 @@ resource "google_storage_bucket" "demo-bucket" {
   }
 
   # force_destroy = true
+}
+
+resource "google_bigquery_dataset" "demo_dataset" {
+  dataset_id = var.bq_dataset_name
+  location = var.location
+
 }
